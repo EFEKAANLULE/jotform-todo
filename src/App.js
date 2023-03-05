@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+function App({ todos }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>To-Do List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map(task => (
+            <tr key={task.name}>
+              <td>{task.name}</td>
+              <td>{task.description}</td>
+             {/* <td>{task.dueDate.toLocaleDateString()}</td> */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
