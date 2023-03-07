@@ -1,27 +1,19 @@
+import './App.css';
+
 function App({ todos }) {
+  console.log(todos);
+
   return (
-    <div>
-      <h1>To-Do List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Description</th>
-            <th>Due Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos.map(task => (
-            <tr key={task.name}>
-              <td>{task.name}</td>
-              <td>{task.description}</td>
-             {/* <td>{task.dueDate.toLocaleDateString()}</td> */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <h1>EFE's Project TODO List </h1>
+      <ul style={{ marginBottom: '40px' }}>
+        {todos.map(todo => (
+          <li key={todo.submissionId}>
+            <strong>{todo.name.first} {todo.name.last}</strong> - {todo.description}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
 export default App;

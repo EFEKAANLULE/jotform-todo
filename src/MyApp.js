@@ -9,21 +9,19 @@ function MyApp() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    fetch(`https://api.jotform.com/form/${formId}/submissions`, {
+    fetch(`https://api.jotform.com/form/${formId}/submissions?apiKey=${apiKey}`, {
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
         'Accept': 'application/json',
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        const submissions = data.content.filter(submission => submission.status === 'ACTIVE');
-        const tasks = submissions.map(submission => ({
-          name: submission.answers[1].answer,
-          description: submission.answers[2].answer,
-          dueDate: new Date(submission.answers[3].answer),
-        }));
-        tasks.sort((a, b) => a.dueDate - b.dueDate);
+      },
+    }).then(response => response.json()) // take the data to json 
+      .then(data => { // process json to do operations on data
+          const submissions = data.content.filter(submission => submission.status === 'ACTIVE');
+          const tasks = submissions.map(submission => {
+          const answers = submission.answers || []; // extract the answers array from submission object
+          const name = (answers[1] && answers[1].answer) || ''; // extract name and description from answers array
+          const description = (answers[2] && answers[2].answer) || ''; // third question in the form, (Type error or feature request)
+          return { name, description };
+        });
         setTodos(tasks);
         setIsLoading(false);
       })
@@ -32,7 +30,7 @@ function MyApp() {
         setIsLoading(false);
       });
   }, []);
-
+   
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -41,7 +39,7 @@ function MyApp() {
     return <p>Error: {error.message}</p>;
   }
 
-  return <App todos={todos} />;
+  return <App todos={todos}/>;
 }
 
 export default MyApp;
