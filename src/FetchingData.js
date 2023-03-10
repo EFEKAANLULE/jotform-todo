@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import App from './App';
 
-function MyApp() {
+function FetchingData() {
   const apiKey = '453b8424a258272fd2017c8bbce72e36'; 
   const formId = '230612598459061'; 
   const [isLoading, setIsLoading] = useState(true);
@@ -42,4 +42,4 @@ function MyApp() {
   return <App todos={todos}/>;
 }
 
-export default MyApp;
+export default FetchingData;
