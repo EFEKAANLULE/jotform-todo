@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import App from './App';
+import { getSubmissions } from './Api';
 
 const FetchingData = () => {
   const apiKey = '453b8424a258272fd2017c8bbce72e36';
@@ -9,19 +10,13 @@ const FetchingData = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    fetch(`https://api.jotform.com/form/${formId}/submissions?apiKey=${apiKey}`, {
-      headers: {
-        'Accept': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        const submissions = data.content.filter(submission => submission.status === 'ACTIVE');
+    getSubmissions(apiKey, formId)
+      .then(submissions => {
         const tasks = submissions.map((submission, index) => {
-        const answers = submission.answers || [];
-        const name = (answers[1] && answers[1].answer) || '';
-        const description = (answers[2] && answers[2].answer) || '';
-        return { id: index, name, description };
+          const { answers } = submission;
+          const name = (answers[1]?.answer) || '';
+          const description = (answers[2]?.answer) || '';
+          return { id: index, ...answers, name, description };
         });
         setTodos(tasks);
         setIsLoading(false);
