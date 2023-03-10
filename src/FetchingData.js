@@ -1,3 +1,4 @@
+// FetchingData.js
 import { useState, useEffect } from 'react';
 import App from './App';
 import { getSubmissions } from './Api';
@@ -8,6 +9,7 @@ const FetchingData = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [todos, setTodos] = useState([]);
+  const [completedTodos, setCompletedTodos] = useState([]);
 
   useEffect(() => {
     getSubmissions(apiKey, formId)
@@ -27,6 +29,22 @@ const FetchingData = () => {
       });
   }, []);
 
+  const handleToggle = (id) => {
+    const updatedTodos = todos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, isDone: !todo.isDone };
+      }
+      return todo;
+    });
+    const completedTodo = updatedTodos.find(todo => todo.id === id && todo.isDone);
+    if (completedTodo) {
+      setCompletedTodos([...completedTodos, completedTodo]);
+      setTodos(updatedTodos.filter(todo => todo.id !== id));
+    } else {
+      setTodos(updatedTodos);
+    }
+  }
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -35,7 +53,7 @@ const FetchingData = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  return <App todos={todos} />;
+  return <App todos={todos} completedTodos={completedTodos} onDone={handleToggle} />;
 };
 
 export default FetchingData;
