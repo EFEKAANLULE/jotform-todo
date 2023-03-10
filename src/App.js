@@ -1,6 +1,6 @@
 import './App.css';
 
-function App({ todos }) {
+const App = ({ todos }) => {
   console.log(todos);
 
   return (
