@@ -8,10 +8,34 @@ const App = ({ todos, onDone }) => {
   const [inProgressTodos, setInProgressTodos] = useState(todos);
 
   const handleToggle = (id) => {
-    const completedTodo = inProgressTodos.find(todo => todo.id === id);
-    setCompletedTodos([...completedTodos, completedTodo]);
-    setInProgressTodos(inProgressTodos.filter(todo => todo.id !== id));
+    const updatedInProgressTodos = inProgressTodos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, isDone: !todo.isDone };
+      }
+      return todo;
+    });
+    
+    const updatedCompletedTodos = completedTodos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, isDone: !todo.isDone };
+      }
+      return todo;
+    });
+  
+    const completedTodo = updatedInProgressTodos.find(todo => todo.id === id && todo.isDone);
+    
+    if (completedTodo) {
+      setCompletedTodos([...completedTodos, completedTodo]);
+      setInProgressTodos(updatedInProgressTodos.filter(todo => todo.id !== id));
+    } else {
+      const inProgressTodo = updatedCompletedTodos.find(todo => todo.id === id && !todo.isDone);
+      if (inProgressTodo) {
+        setInProgressTodos([...inProgressTodos, inProgressTodo]);
+        setCompletedTodos(updatedCompletedTodos.filter(todo => todo.id !== id));
+      }
+    }
   }
+  
 
   return (
     <div style={{ maxWidth: '50vw', margin: '0 auto' }}>
