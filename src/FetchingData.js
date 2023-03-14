@@ -1,8 +1,9 @@
 // FetchingData.js
 import { useState, useEffect } from 'react';
 import App from './App';
-import { getSubmissions } from './Api';
+import { getSubmissions} from './Api';
 
+//This class is responsible for fetching data from jotform api 
 const FetchingData = () => {
   const apiKey = '453b8424a258272fd2017c8bbce72e36';
   const formId = '230612598459061';
