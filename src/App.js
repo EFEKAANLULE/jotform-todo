@@ -3,11 +3,11 @@ import Todo from './Todo';
 import './App.css';
 
 
-const App = ({ todos, onDone }) => {
+const App = ({ todos}) => {
   const [completedTodos, setCompletedTodos] = useState([]);
   const [inProgressTodos, setInProgressTodos] = useState(todos);
 
-  const handleToggle = (id) => {
+  const handleToggle = (id) => { // responsible for MOVING the todo from in progress to completed todo part and reverse also.
     const updatedInProgressTodos = inProgressTodos.map(todo => {
       if (todo.id === id) {
         return { ...todo, isDone: !todo.isDone };
